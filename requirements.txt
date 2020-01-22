@@ -2,11 +2,8 @@ dash==1.8.0
 dash_core_components==1.7.0
 dash_html_components==1.0.2
 dash_table==4.6.0
-base64
 datetime==4.3
-os
 pathlib==1.0.1
 plotly==4.4.1
 pandas==0.24.2
 numpy==1.16.2
-json
