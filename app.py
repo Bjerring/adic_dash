@@ -6,20 +6,19 @@ Created on Sun Jan 19 08:46:19 2020
 """
 
 #%%
-
 import dash
-from dash.dependencies import Input, Output, State
+from dash.dependencies import Input, Output
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_table as dt
-import base64
-from datetime import datetime, timedelta
-import os
+#import base64
+#from datetime import datetime, timedelta
+#import os
 import pathlib
 import plotly.graph_objs as go
 import pandas as pd
-import numpy as np
-import json
+#import numpy as np
+#import json
 
 #%%
 # get relative data folder
@@ -36,30 +35,16 @@ index_name = ["S&P 500", "Euro STOXX","TOPIX"]
 returns = df_current_prices[df_current_prices.columns[:3]]
 returns.columns = index_name
 
-bar_notes = df_current_prices[df_current_prices.columns[3:]]
+bar_notes = df_current_prices[df_current_prices.columns[3:]].copy()
 bar_notes.columns = index_name
 
-notes = df_current_prices[df_current_prices.columns[3:]]
+notes = df_current_prices[df_current_prices.columns[3:]].copy()
 notes.columns = index_name
 notes.loc[notes.index,"year"] = notes.index.year.tolist()
 notes.loc[notes.index,"month"] = notes.index.month.tolist()
 notes = notes.reset_index()
 notes = notes.drop('Dates',axis=1)
 notes = notes.set_index(['year','month'])
-
-
-################################################
-# FUNCTIONS START
-
-def make_dash_table( df ):
-    ''' Return a dash definition of an HTML table for a Pandas dataframe '''
-    table = []
-    for index, row in df.iterrows():
-        html_row = []
-        for i in range(len(row)):
-            html_row.append( html.Td([ row[i] ]) )
-        table.append( html.Tr( html_row ) )
-    return table
 
 
 ################################################
@@ -71,7 +56,6 @@ app = dash.Dash('ADIC')
 app.layout = html.Div([
     html.Div([
         html.Div([
-                #html.H5(" "),
                 html.Img(src=app.get_asset_url("ADICcl.jpg"),width=250),
                 ],className="two columns"),
 
@@ -221,9 +205,8 @@ def update_table2(value):
     columns =  [{"name": i, "id": i,} for i in (out_df.columns)]
     
     # create datatable 
-    table = dt.DataTable(data=data, columns=columns, style_cell={'fontSize':14, 'font-family':'sans-serif'} ) # , fixed_rows={ 'headers': True, 'data': 0 },style_cell = {'minWidth': '90px', 'maxWidth': '150px'},style_table={'maxHeight': '300px','maxWidth': '680px'}  
-
-
+    table = dt.DataTable(data=data, columns=columns, style_cell={'fontSize':14, 'font-family':'sans-serif'} ) 
+    
     return table
     
     
