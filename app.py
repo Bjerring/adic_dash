@@ -13,22 +13,29 @@ import dash_html_components as html
 import dash_table as dt
 #import base64
 #from datetime import datetime, timedelta
-#import os
+import os
 import pathlib
 import plotly.graph_objs as go
 import pandas as pd
 #import numpy as np
 #import json
 
-#%%
+#%%    
+    
 # get relative data folder
 PATH = pathlib.Path(__file__)#.parent
 #PATH = os.chdir("C:\\Users\\ttb\\Desktop\\projects\\python\\app\\data")
+#PATH = os.chdir("C:\\Users\\ttb\\Desktop\\projects\\git\\adic_dash\\data")
 DATA_PATH = PATH.joinpath("../data").resolve()
 
 #df_current_prices = pd.read_excel("User Interface Exercise.xlsx",sheet_name="Data")
-df_current_prices = pd.read_excel(DATA_PATH.joinpath("User Interface Exercise.xlsx"),sheet_name="Data")
+#df_current_prices = pd.read_csv("User Interface Exercise.csv")
+#df_current_prices = pd.read_excel(DATA_PATH.joinpath("User Interface Exercise.xlsx"),sheet_name="Data")
+df_current_prices = pd.read_csv(DATA_PATH.joinpath("User Interface Exercise.csv"))
+df_current_prices = df_current_prices.drop(df_current_prices.columns[0],axis=1)
+
 df_current_prices = df_current_prices.set_index("Dates")
+df_current_prices.index = pd.DatetimeIndex(df_current_prices.index)
 
 index_name = ["S&P 500", "Euro STOXX","TOPIX"]
 
@@ -241,7 +248,7 @@ def update_output(input1):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(port=8080,debug=False)
 
     # Open browser and go to
     # http://127.0.0.1:8050/
